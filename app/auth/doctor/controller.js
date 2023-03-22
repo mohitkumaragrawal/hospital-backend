@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const pool = require("../../db");
+const { sendVerificationMail } = require("../verify");
 
 const { JWT_SECRET } = process.env;
 
@@ -36,6 +37,8 @@ const register = async (req, res) => {
       "INSERT INTO doctors (name, email, password, speciality) VALUES (?, ?, ?, ?);",
       [name, email, hashedPassword, speciality]
     );
+
+    sendVerificationMail(email, "doctor");
 
     res.status(200).json({
       status: "success",

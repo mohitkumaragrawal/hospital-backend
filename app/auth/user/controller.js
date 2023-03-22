@@ -5,6 +5,8 @@ const pool = require("../../db");
 
 const { JWT_SECRET } = process.env;
 
+const { sendVerificationMail } = require("../verify");
+
 // write a function to validate the email address
 const validateEmail = (email) => {
   const re = /\S+@\S+\.\S+/;
@@ -36,6 +38,8 @@ const register = async (req, res) => {
       "INSERT INTO users (name, email, password) VALUES (?, ?, ?);",
       [name, email, hashedPassword]
     );
+
+    sendVerificationMail(email, "user");
 
     res.status(200).json({
       status: "success",
