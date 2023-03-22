@@ -6,11 +6,7 @@ const { sendVerificationMail } = require("../verify");
 
 const { JWT_SECRET } = process.env;
 
-// write a function to validate the email address
-const validateEmail = (email) => {
-  const re = /\S+@\S+\.\S+/;
-  return re.test(email);
-};
+const validateEmail = require("../../utils/email-validator");
 
 const register = async (req, res) => {
   const { name, email, password, speciality } = req.body;
