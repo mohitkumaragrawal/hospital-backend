@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const { z } = require("zod");
 
 const pool = require("../../db");
+const { sendVerificationMail } = require("../verify");
 
 const { JWT_SECRET } = process.env;
 
