@@ -1,6 +1,6 @@
 -- create a bunch of tables;
 
-create table hospital;
+create database hospital;
 
 create table
     users (
