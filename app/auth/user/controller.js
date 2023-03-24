@@ -1,35 +1,20 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { z } = require("zod");
 
 const pool = require("../../db");
 
 const { JWT_SECRET } = process.env;
 
-const { sendVerificationMail } = require("../verify");
-
-const validateEmail = require("../../utils/email-validator");
-
+const registerSchema = z.object({
+  name: z.string(),
+  email: z.string().email(),
+  password: z.string(),
+});
 const register = async (req, res) => {
-  const { name, email, password } = req.body;
-
-  if (!name || !email || !password) {
-    return res.status(400).json({
-      status: "error",
-      message: "Please enter all fields",
-    });
-  }
-
-  if (!validateEmail(email)) {
-    return res.status(400).json({
-      status: "error",
-      message: "Please enter a valid email address",
-    });
-  }
-
-  // valid email address using regex
-
-  const hashedPassword = await bcrypt.hash(password, 10);
   try {
+    const { name, email, password } = registerSchema.parse(req.body);
+    const hashedPassword = await bcrypt.hash(password, 10);
     const user = await pool.query(
       "INSERT INTO users (name, email, password) VALUES (?, ?, ?);",
       [name, email, hashedPassword]
@@ -49,24 +34,13 @@ const register = async (req, res) => {
   }
 };
 
+const loginSchema = z.object({
+  email: z.string().email(),
+  password: z.string(),
+});
 const login = async (req, res) => {
-  const { email, password } = req.body;
-
-  if (!email || !password) {
-    return res.status(400).json({
-      status: "error",
-      message: "Please enter all fields",
-    });
-  }
-
-  if (!validateEmail(email)) {
-    return res.status(400).json({
-      status: "error",
-      message: "Please enter a valid email address",
-    });
-  }
-
   try {
+    const { email, password } = loginSchema.parse(req.body);
     const user = await pool.query("SELECT * FROM users WHERE email = ?", [
       email,
     ]);

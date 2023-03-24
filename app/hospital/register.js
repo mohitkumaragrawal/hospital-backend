@@ -1,20 +1,44 @@
 const hospitalRegisterRouter = require("express").Router();
 const bcrypt = require("bcrypt");
+const { z } = require("zod");
 
-const emailValidator = require("../utils/email-validator");
+const pool = require("../db");
+
+const hospitalRegisterSchema = z.object({
+  name: z.string(),
+  address: z.string(),
+  root_mail: z.string().email(),
+  root_pass: z.string(),
+  coords: z.object({
+    lat: z.number(),
+    lng: z.number(),
+  }),
+});
 
 hospitalRegisterRouter.post("/", async (req, res) => {
-  const { name, address, root_mail, root_pass, coords } = req.body;
-  if (!name || !address || !root_mail || !root_pass || !coords) {
-    return res.status(400).json({ message: "Invalid request" });
-  }
+  try {
+    const data = hospitalRegisterSchema.parse(req.body);
+    const hashedPassword = await bcrypt.hash(data.root_pass, 10);
 
-  if (!emailValidator(root_mail)) {
-    return res.status(400).json({ message: "Invalid email" });
-  }
+    const sqlPoint = `ST_GeomFromText('POINT(${data.coords.lng} ${data.coords.lat})', 4326)`;
 
-  const hashedPassword = await bcrypt.hash(root_pass, 10);
-  // TODO: complete it!
+    const hospital = await pool.query(
+      `INSERT INTO hospitals 
+      (name, address, root_mail, root_pass, coords) 
+      VALUES (?, ?, ?, ?, ${sqlPoint});`,
+
+      [data.name, data.address, data.root_mail, hashedPassword]
+    );
+
+    res.status(200).json({
+      status: "success",
+    });
+  } catch (error) {
+    return res.status(400).json({
+      status: "error",
+      error,
+    });
+  }
 });
 
 module.exports = hospitalRegisterRouter;

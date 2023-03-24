@@ -1,34 +1,25 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { z } = require("zod");
 
 const pool = require("../../db");
 const { sendVerificationMail } = require("../verify");
 
 const { JWT_SECRET } = process.env;
 
-const validateEmail = require("../../utils/email-validator");
-
+const registerSchema = z.object({
+  name: z.string(),
+  email: z.string().email(),
+  password: z.string(),
+  speciality: z.string(),
+});
 const register = async (req, res) => {
-  const { name, email, password, speciality } = req.body;
-
-  if (!name || !email || !password || !speciality) {
-    return res.status(400).json({
-      status: "error",
-      message: "Please enter all fields",
-    });
-  }
-
-  if (!validateEmail(email)) {
-    return res.status(400).json({
-      status: "error",
-      message: "Please enter a valid email address",
-    });
-  }
-
-  // valid email address using regex
-
-  const hashedPassword = await bcrypt.hash(password, 10);
   try {
+    const { name, email, password, speciality } = registerSchema.parse(
+      req.body
+    );
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     const user = await pool.query(
       "INSERT INTO doctors (name, email, password, speciality) VALUES (?, ?, ?, ?);",
       [name, email, hashedPassword, speciality]
@@ -40,7 +31,6 @@ const register = async (req, res) => {
       status: "success",
     });
   } catch (err) {
-    console.error(err.message);
     res.status(500).json({
       status: "error",
       message: "Server error",
@@ -48,24 +38,14 @@ const register = async (req, res) => {
   }
 };
 
+const loginSchema = z.object({
+  email: z.string().email(),
+  password: z.string(),
+});
 const login = async (req, res) => {
-  const { email, password } = req.body;
-
-  if (!email || !password) {
-    return res.status(400).json({
-      status: "error",
-      message: "Please enter all fields",
-    });
-  }
-
-  if (!validateEmail(email)) {
-    return res.status(400).json({
-      status: "error",
-      message: "Please enter a valid email address",
-    });
-  }
-
   try {
+    const { email, password } = loginSchema.parse(req.body);
+
     const user = await pool.query("SELECT * FROM doctors WHERE email = ?", [
       email,
     ]);
@@ -99,10 +79,9 @@ const login = async (req, res) => {
       },
     });
   } catch (err) {
-    console.error(err.message);
     res.status(500).json({
       status: "error",
-      message: "Server error",
+      error: err,
     });
   }
 };

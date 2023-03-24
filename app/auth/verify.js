@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const { z } = require("zod");
 
 const transporter = require("../utils/mail-transporter");
 
@@ -59,10 +60,15 @@ verifyRouter.get("/:token", async (req, res) => {
   }
 });
 
+const verificationSchema = z.object({
+  email: z.string().email(),
+  type: z.string().nonempty(),
+});
+
 // POST /auth/verify: send verification email
 verifyRouter.post("/", async (req, res) => {
-  const { email, type } = req.body;
   try {
+    const { email, type } = verificationSchema.parse(req.body);
     if (type === "user") {
       const user = await pool.query("SELECT * FROM users WHERE email = ?", [
         email,
@@ -98,7 +104,7 @@ verifyRouter.post("/", async (req, res) => {
     console.error(err.message);
     res.status(500).json({
       status: "error",
-      message: "Server error",
+      error: err,
     });
   }
 });
