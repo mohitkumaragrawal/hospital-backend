@@ -21,6 +21,7 @@ app.use(cors());
 app.use("/auth", require("./app/auth/router"));
 app.use("/hospital", require("./app/hospital/router"));
 
+
 const PORT = process.env.PORT || "3000";
 console.log(`Server started listening on ${PORT}`);
 app.listen(PORT);

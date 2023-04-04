@@ -46,3 +46,7 @@ create table
 alter table hospitals add unique(root_mail);
 
 alter table hospitals add verfied_mail tinyint not null default 0;
+
+alter table users add column image varchar(100);
+
+alter table doctors add column image varchar(100);
