@@ -50,3 +50,5 @@ alter table hospitals add verfied_mail tinyint not null default 0;
 alter table users add column image varchar(100);
 
 alter table doctors add column image varchar(100);
+
+alter table hospitals add column image varchar(100);
