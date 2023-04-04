@@ -14,23 +14,22 @@ const registerSchema = z.object({
   speciality: z.string(),
 });
 
-
 const register = async (req, res) => {
-  console.log('into register')
+  console.log("into register");
   try {
-    const { name, email, password, speciality} = registerSchema.parse(
+    const { name, email, password, speciality } = registerSchema.parse(
       req.body
     );
-    const file=req.file.filename
-    const image=`../uploads/${file}`
+    const file = req.file.filename;
+    const image = `../uploads/${file}`;
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await pool.query(
       "INSERT INTO doctors (name, email, password, speciality,image) VALUES (?, ?, ?, ?,?);",
-      [name, email, hashedPassword, speciality,image]
+      [name, email, hashedPassword, speciality, image]
     );
 
-    //sendVerificationMail(email, "doctor");
+    sendVerificationMail(email, "doctor");
 
     res.status(200).json({
       status: "success",
@@ -71,7 +70,7 @@ const login = async (req, res) => {
       });
     }
 
-    let src=path.join(__dirname,user[0].image)
+    let src = path.join(__dirname, user[0].image);
     const token = jwt.sign({ user: user[0].id, type: "doctor" }, JWT_SECRET, {
       expiresIn: "1h",
     });
