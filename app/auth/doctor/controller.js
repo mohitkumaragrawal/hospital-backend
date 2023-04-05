@@ -20,16 +20,16 @@ const register = async (req, res) => {
     const { name, email, password, speciality } = registerSchema.parse(
       req.body
     );
+    const hospital_id = req.auth.id;
     const file = req.file.filename;
     const image = `../uploads/${file}`;
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await pool.query(
-      "INSERT INTO doctors (name, email, password, speciality,image) VALUES (?, ?, ?, ?,?);",
-      [name, email, hashedPassword, speciality, image]
+      "INSERT INTO doctors (name, email, password, speciality,image,hospital_id) VALUES (?, ?, ?, ?,?,?);",
+      [name, email, hashedPassword, speciality, image, hospital_id]
     );
-
-    sendVerificationMail(email, "doctor");
+    //sendVerificationMail(email, "doctor");
 
     res.status(200).json({
       status: "success",

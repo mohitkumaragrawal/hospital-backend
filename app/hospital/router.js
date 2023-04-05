@@ -1,6 +1,9 @@
 const hospitalRouter = require("express").Router();
+const { registerDoctor, loginDoctor } = require("../auth/doctor/controller");
+const doctorRouter = require("../auth/doctor/router");
 
 const multer = require("multer");
+const authMiddleWare = require("../authMiddleWare");
 
 const imgConfig = multer.diskStorage({
   destination: (req, file, callback) => {
@@ -24,5 +27,9 @@ const upload = multer({
 hospitalRouter.use("/register", upload.single("image"), require("./register"));
 hospitalRouter.use("/login", require("./login"));
 hospitalRouter.use("/closest", require("./closest"));
+
+hospitalRouter.use("/addDoctor", authMiddleWare, doctorRouter);
+
+hospitalRouter.post("/addTimeSlot", addTimeSlot);
 
 module.exports = hospitalRouter;

@@ -52,3 +52,19 @@ alter table users add column image varchar(100);
 alter table doctors add column image varchar(100);
 
 alter table hospitals add column image varchar(100);
+
+create table timeslots(
+    id serial primary key,
+    doctor_id bigint unsigned not null,
+    day_of_week varchar(10),
+    start_time time,
+    end_time time
+);
+
+alter table timeslots add constraint foreign key(doctor_id) references doctors(id);
+
+ alter table timeslots add column is_booked boolean default false;
+
+alter table doctors add column hospital_id bigint unsigned;
+
+alter table doctors add constraint foreign key(hospital_id) references hospitals(id);
