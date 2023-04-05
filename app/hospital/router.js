@@ -1,6 +1,8 @@
 const hospitalRouter = require("express").Router();
 const { registerDoctor, loginDoctor } = require("../auth/doctor/controller");
 const doctorRouter = require("../auth/doctor/router");
+const addTimeSlot = require("../hospital/timeslots/addTimeslot");
+const deleteTimeSlot = require("../hospital/timeslots/deleteTimeSlot");
 
 const multer = require("multer");
 const authMiddleWare = require("../authMiddleWare");
@@ -30,6 +32,7 @@ hospitalRouter.use("/closest", require("./closest"));
 
 hospitalRouter.use("/addDoctor", authMiddleWare, doctorRouter);
 
-hospitalRouter.post("/addTimeSlot", addTimeSlot);
+hospitalRouter.post("/addTimeSlot", authMiddleWare, addTimeSlot);
+hospitalRouter.post("/deleteTimeSlot", authMiddleWare, deleteTimeSlot);
 
 module.exports = hospitalRouter;
