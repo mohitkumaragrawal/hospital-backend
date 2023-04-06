@@ -68,3 +68,5 @@ alter table timeslots add constraint foreign key(doctor_id) references doctors(i
 alter table doctors add column hospital_id bigint unsigned;
 
 alter table doctors add constraint foreign key(hospital_id) references hospitals(id);
+
+alter table doctors rename column password to qualifications;

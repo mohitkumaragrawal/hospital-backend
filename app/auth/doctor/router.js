@@ -22,8 +22,8 @@ const upload = multer({
   fileFilter: isImage,
 });
 
-//router.post("/register",upload.single('image'), register);
-router.post("/register", register);
+router.post("/register", upload.single("image"), register);
+//router.post("/register", register);
 router.post("/login", login);
 
 module.exports = router;

@@ -3,6 +3,8 @@ const { registerDoctor, loginDoctor } = require("../auth/doctor/controller");
 const doctorRouter = require("../auth/doctor/router");
 const addTimeSlot = require("../hospital/timeslots/addTimeslot");
 const deleteTimeSlot = require("../hospital/timeslots/deleteTimeSlot");
+const searchDoctor = require("../hospital/timeslots/listOfDoctors");
+const displayTimeSlot = require("../hospital/timeslots/displayTimeSlot");
 
 const multer = require("multer");
 const authMiddleWare = require("../authMiddleWare");
@@ -30,9 +32,10 @@ hospitalRouter.use("/register", upload.single("image"), require("./register"));
 hospitalRouter.use("/login", require("./login"));
 hospitalRouter.use("/closest", require("./closest"));
 
-hospitalRouter.use("/addDoctor", authMiddleWare, doctorRouter);
-
-hospitalRouter.post("/addTimeSlot", authMiddleWare, addTimeSlot);
-hospitalRouter.post("/deleteTimeSlot", authMiddleWare, deleteTimeSlot);
+hospitalRouter.use("/addDoctor", doctorRouter);
+hospitalRouter.post("/searchDoctor", searchDoctor);
+hospitalRouter.post("/addTimeSlot", addTimeSlot);
+hospitalRouter.post("/displayTimeSlot", displayTimeSlot);
+hospitalRouter.post("/deleteTimeSlot", deleteTimeSlot);
 
 module.exports = hospitalRouter;

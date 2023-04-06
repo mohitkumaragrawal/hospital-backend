@@ -9,25 +9,25 @@ const { JWT_SECRET } = process.env;
 
 const registerSchema = z.object({
   name: z.string(),
+  qualifications: z.string(),
   email: z.string().email(),
-  password: z.string(),
   speciality: z.string(),
 });
 
 const register = async (req, res) => {
   console.log("into register");
   try {
-    const { name, email, password, speciality } = registerSchema.parse(
+    const { name, qualifications, email, speciality } = registerSchema.parse(
       req.body
     );
     const hospital_id = req.auth.id;
     const file = req.file.filename;
     const image = `../uploads/${file}`;
-    const hashedPassword = await bcrypt.hash(password, 10);
+    //const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await pool.query(
-      "INSERT INTO doctors (name, email, password, speciality,image,hospital_id) VALUES (?, ?, ?, ?,?,?);",
-      [name, email, hashedPassword, speciality, image, hospital_id]
+      "INSERT INTO doctors (name, qualifications, email, speciality,image,hospital_id) VALUES (?, ?, ?, ?, ?, ?);",
+      [name, qualifications, email, speciality, image, hospital_id]
     );
     //sendVerificationMail(email, "doctor");
 
