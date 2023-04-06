@@ -9,6 +9,7 @@ const app = express();
 require("./app/db");
 const authMiddleWare = require("./app/authMiddleWare");
 const hospitalRouter = require("./app/hospital/router");
+const userRouter = require("./app/user/router");
 
 // Test request
 app.get("/", (req, res) => {
@@ -24,6 +25,7 @@ app.use("/auth", require("./app/auth/router"));
 app.use("/hospital", require("./app/hospital/router"));
 
 app.use("/mainpage/hospital", authMiddleWare, hospitalRouter);
+app.use("/mainpage/user", authMiddleWare, userRouter);
 
 const PORT = process.env.PORT || "3000";
 console.log(`Server started listening on ${PORT}`);

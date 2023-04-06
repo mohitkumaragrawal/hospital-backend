@@ -70,3 +70,12 @@ alter table doctors add column hospital_id bigint unsigned;
 alter table doctors add constraint foreign key(hospital_id) references hospitals(id);
 
 alter table doctors rename column password to qualifications;
+
+create table bookings(
+    -> id serial primary key,
+    -> booking_id bigint unsigned,
+    -> patient_id bigint unsigned,
+    -> foreign key(booking_id) references timeslots(id),
+    -> foreign key(patient_id) references users(id));
+
+alter table bookings rename column booking_id to timeslot_id;
