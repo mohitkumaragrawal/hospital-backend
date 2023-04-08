@@ -26,7 +26,7 @@ const register = async (req, res) => {
       [name, email, hashedPassword, image]
     );
 
-    sendVerificationMail(email, "user");
+    //sendVerificationMail(email, "user");
 
     res.status(200).json({
       status: "success",
@@ -80,7 +80,6 @@ const login = async (req, res) => {
         token,
         name: user[0].name,
         email: user[0].email,
-        image,
       },
     });
   } catch (err) {

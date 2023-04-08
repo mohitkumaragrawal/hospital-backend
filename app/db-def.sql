@@ -79,3 +79,20 @@ create table bookings(
     -> foreign key(patient_id) references users(id));
 
 alter table bookings rename column booking_id to timeslot_id;
+
+create table tests(
+    -> test_id serial,
+    -> name varchar(30),
+    -> description varchar(100),
+    -> hospital bigint unsigned,
+    -> foreign key(hospital) references hospitals(id));
+
+alter table tests add column image varchar(100);
+
+alter table timeslots drop column is_booked;
+
+alter table timeslots add column no_of_bookings integer default 0;
+
+alter table timeslots add column total_bookings integer;
+
+alter table timeslots add constraint check(no_of_bookings<=total_bookings);

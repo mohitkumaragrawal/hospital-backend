@@ -5,17 +5,20 @@ const authMiddleWare = (req, res, next) => {
   if (!authToken) {
     console.log("you are not authorized to use this webpage");
     res.status(400).send();
+    return;
   }
   const decoded = verifyJwt(authToken);
   if (!decoded) {
     console.log("your token has expired");
     res.status(400).send();
+    return;
   }
   req.auth = {
     id: decoded.user,
     type: decoded.type,
   };
   res.status(200).send();
+  next();
 };
 
 module.exports = authMiddleWare;

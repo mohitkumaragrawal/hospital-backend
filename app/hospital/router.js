@@ -10,11 +10,14 @@ const displayProfileImage = require("./profile/displayProfileImage");
 const doctorImages = require("./timeslots/doctorImages");
 
 const multer = require("multer");
-const authMiddleWare = require("../authMiddleWare");
+
+const addTest = require("./tests/addTest");
+const deleteTest = require("./tests/deleteTest");
+const displayTest = require("./tests/displayTest");
 
 const imgConfig = multer.diskStorage({
   destination: (req, file, callback) => {
-    callback(null, "./app/auth/doctor/uploads");
+    callback(null, "./app/hospital/uploads");
   },
   filename: (req, file, callback) => {
     callback(null, file.originalname);
@@ -43,5 +46,9 @@ hospitalRouter.post("/deleteTimeSlot", deleteTimeSlot);
 hospitalRouter.post("/displayProfile", displayProfile);
 hospitalRouter.post("/displayProfileImage", displayProfileImage);
 hospitalRouter.post("/doctorImages", doctorImages);
+
+hospitalRouter.post("/addTest", upload.single("image"), addTest);
+hospitalRouter.post("/deleteTest", deleteTest);
+hospitalRouter.post("/displayTest", displayTest);
 
 module.exports = hospitalRouter;

@@ -9,10 +9,10 @@ const hospitalRegisterSchema = z.object({
   address: z.string(),
   root_mail: z.string().email(),
   root_pass: z.string(),
-  coords: z.object({
+  /*coords: z.object({
     lat: z.number(),
     lng: z.number(),
-  }),
+  }),*/
 });
 
 hospitalRegisterRouter.post("/", async (req, res) => {
@@ -27,8 +27,8 @@ hospitalRegisterRouter.post("/", async (req, res) => {
 
     const hospital = await pool.query(
       `INSERT INTO hospitals 
-      (name, address, root_mail, root_pass, coords, image) 
-      VALUES (?, ?, ?, ?, ${sqlPoint},?);`,
+      (name, address, root_mail, root_pass, coords,image) 
+      VALUES (?, ?, ?, ?,${sqlPoint} ,?);`,
 
       [data.name, data.address, data.root_mail, hashedPassword, image]
     );

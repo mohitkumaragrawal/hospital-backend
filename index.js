@@ -27,6 +27,6 @@ app.use("/hospital", require("./app/hospital/router"));
 app.use("/mainpage/hospital", authMiddleWare, hospitalRouter);
 app.use("/mainpage/user", authMiddleWare, userRouter);
 
-const PORT = process.env.PORT || "3000";
+const PORT = process.env.PORT || "5000";
 console.log(`Server started listening on ${PORT}`);
 app.listen(PORT);
