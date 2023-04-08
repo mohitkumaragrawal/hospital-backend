@@ -1,9 +1,9 @@
-const authMiddleWare = require("../authMiddleWare");
+const authMiddleWareHospital = require("../authMiddleWareHospital");
 
 const router = require("express").Router();
 
 router.use("/user", require("./user/router"));
-router.use("/doctor", authMiddleWare, require("./doctor/router"));
+router.use("/doctor", authMiddleWareHospital, require("./doctor/router"));
 router.use("/verify", require("./verify").verifyRouter);
 
 module.exports = router;

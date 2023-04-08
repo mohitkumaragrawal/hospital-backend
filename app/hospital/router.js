@@ -8,6 +8,7 @@ const displayTimeSlot = require("../hospital/timeslots/displayTimeSlot");
 const displayProfile = require("./profile/displayProfile");
 const displayProfileImage = require("./profile/displayProfileImage");
 const doctorImages = require("./timeslots/doctorImages");
+const displayName = require("../hospital/displayName");
 
 const multer = require("multer");
 
@@ -46,6 +47,7 @@ hospitalRouter.post("/deleteTimeSlot", deleteTimeSlot);
 hospitalRouter.post("/displayProfile", displayProfile);
 hospitalRouter.post("/displayProfileImage", displayProfileImage);
 hospitalRouter.post("/doctorImages", doctorImages);
+hospitalRouter.post("/displayName", displayName);
 
 hospitalRouter.post("/addTest", upload.single("image"), addTest);
 hospitalRouter.post("/deleteTest", deleteTest);

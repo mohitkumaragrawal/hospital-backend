@@ -8,7 +8,7 @@ const listOfDoctors = async (req, res) => {
     const hospital_id = req.auth.id;
     const search_term = `%${name}%`;
     const doctor_list = await pool.query(
-      `select name, email, qualifications, speciality from doctors where hospital_id=? and name like ?`,
+      `select id,name, email, qualifications, speciality from doctors where hospital_id=? and name like ?`,
       [hospital_id, search_term]
     );
     //console.log(doctor_list);
