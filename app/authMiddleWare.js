@@ -1,7 +1,8 @@
 const verifyJwt = require("./verifyJwt");
 
 const authMiddleWare = (req, res, next) => {
-  const authToken = req.header("auth");
+  const authToken = req.headers.auth;
+  //console.log(authToken);
   if (!authToken) {
     console.log("you are not authorized to use this webpage");
     res.status(400).send();
@@ -17,7 +18,7 @@ const authMiddleWare = (req, res, next) => {
     id: decoded.user,
     type: decoded.type,
   };
-  res.status(200).send();
+  //res.status(200).send();
   next();
 };
 

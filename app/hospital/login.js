@@ -6,16 +6,18 @@ const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = process.env;
 
 const loginSchema = z.object({
-  root_mail: z.string().email(),
-  root_pass: z.string(),
+  email: z.string().email(),
+  password: z.string(),
 });
 hospitalLoginRouter.post("/", async (req, res) => {
   try {
-    const { root_mail, root_pass } = loginSchema.parse(req.body);
+    const { email, password } = loginSchema.parse(req.body);
+    //console.log(email, password);
     const rows = await pool.query(
       "SELECT * FROM hospitals WHERE root_mail = ?",
-      [root_mail]
+      [email]
     );
+    //console.log(rows);
 
     if (rows.length === 0) {
       return res.status(401).json({
@@ -24,7 +26,8 @@ hospitalLoginRouter.post("/", async (req, res) => {
       });
     }
 
-    const validPassword = await bcrypt.compare(root_pass, rows[0].root_pass);
+    const validPassword = await bcrypt.compare(password, rows[0].root_pass);
+    //console.log(validPassword);
 
     if (!validPassword) {
       return res.status(401).json({
@@ -36,8 +39,8 @@ hospitalLoginRouter.post("/", async (req, res) => {
     const token = jwt.sign({ user: rows[0].id, type: "hospital" }, JWT_SECRET, {
       expiresIn: "1d",
     });
-
-    res.status(200).json({
+    //console.log(token);
+    res.status(200).send({
       status: "success",
       data: {
         token,
@@ -45,10 +48,10 @@ hospitalLoginRouter.post("/", async (req, res) => {
         root_mail: rows[0].root_mail,
         address: rows[0].address,
         created_at: rows[0].created_at,
-        coords: {
+        /*coords: {
           lng: rows[0].coords.x,
           lat: rows[0].coords.y,
-        },
+        },*/
       },
     });
   } catch (err) {

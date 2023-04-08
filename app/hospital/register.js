@@ -23,12 +23,12 @@ hospitalRegisterRouter.post("/", async (req, res) => {
     const image = `../uploads/${file}`;
     const hashedPassword = await bcrypt.hash(data.root_pass, 10);
 
-    const sqlPoint = `ST_GeomFromText('POINT(${data.coords.lng} ${data.coords.lat})', 4326)`;
+    //const sqlPoint = `ST_GeomFromText('POINT(${data.coords.lng} ${data.coords.lat})', 4326)`;
 
     const hospital = await pool.query(
       `INSERT INTO hospitals 
-      (name, address, root_mail, root_pass, coords,image) 
-      VALUES (?, ?, ?, ?,${sqlPoint} ,?);`,
+      (name, address, root_mail, root_pass,image) 
+      VALUES (?, ?, ?, ? ,?);`,
 
       [data.name, data.address, data.root_mail, hashedPassword, image]
     );

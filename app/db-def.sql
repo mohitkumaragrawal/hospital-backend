@@ -96,3 +96,5 @@ alter table timeslots add column no_of_bookings integer default 0;
 alter table timeslots add column total_bookings integer;
 
 alter table timeslots add constraint check(no_of_bookings<=total_bookings);
+
+alter table hospitals drop column coords;
