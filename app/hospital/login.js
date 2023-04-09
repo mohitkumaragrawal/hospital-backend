@@ -39,7 +39,7 @@ hospitalLoginRouter.post("/", async (req, res) => {
     const token = jwt.sign({ user: rows[0].id, type: "hospital" }, JWT_SECRET, {
       expiresIn: "1d",
     });
-    //console.log(token);
+    //  console.log(token);
     res.status(200).send({
       status: "success",
       data: {
