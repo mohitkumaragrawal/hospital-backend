@@ -4,12 +4,17 @@ const path = require("path");
 
 const displayProfileImage = async (req, res) => {
   try {
+    //console.log("into display profile image");
     const id = req.auth.id;
-    const image_url = await pool.query("select image from users where id=?", [
+    let image_url = await pool.query("select image from users where id=?", [
       id,
     ]);
-    const rel_url = path.join(__dirname, "../auth/user/controller");
+    image_url = image_url[0].image;
+    //console.log(__dirname);
+    const rel_url = path.join(__dirname, "../../auth/user/controller");
+    //console.log(rel_url);
     const final_url = path.join(rel_url, image_url);
+    //console.log(final_url);
     res.sendFile(final_url);
   } catch (err) {
     res.status(500).send({

@@ -13,6 +13,7 @@ const addTimeSlot = async (req, res) => {
   try {
     const { doctor_id, day, start_time, end_time, total_bookings } =
       addTimeslotSchema.parse(req.body);
+
     const timeslot = await pool.query(
       "insert into timeslots(doctor_id,day_of_week,start_time,end_time,total_bookings) values (?,?,?,?,?);",
       [doctor_id, day, start_time, end_time, total_bookings]

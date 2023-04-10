@@ -98,3 +98,9 @@ alter table timeslots add column total_bookings integer;
 alter table timeslots add constraint check(no_of_bookings<=total_bookings);
 
 alter table hospitals drop column coords;
+
+alter table timeslots modify start_time varchar(20);
+
+alter table timeslots modify end_time varchar(20);
+
+alter table bookings add constraint unique(timeslot_id,patient_id);
