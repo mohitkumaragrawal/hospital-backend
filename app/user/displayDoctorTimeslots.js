@@ -5,7 +5,7 @@ const displayDoctorTimeslots = async (req, res) => {
     const { id, day } = req.body;
     console.log(id, " ", day);
     const timeslots = await pool.query(
-      "select * from timeslots where id=? and day_of_week=?",
+      "select * from timeslots where doctor_id=? and day_of_week=?",
       [id, day]
     );
     res.status(200).send(timeslots);
