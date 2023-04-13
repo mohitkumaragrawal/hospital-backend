@@ -29,7 +29,7 @@ const register = async (req, res) => {
       "INSERT INTO doctors (name, qualifications, email, speciality,image,hospital_id) VALUES (?, ?, ?, ?, ?, ?);",
       [name, qualifications, email, speciality, image, hospital_id]
     );
-    //sendVerificationMail(email, "doctor");
+    sendVerificationMail(email, "doctor");
 
     res.status(200).json({
       status: "success",
