@@ -72,20 +72,20 @@ alter table doctors add constraint foreign key(hospital_id) references hospitals
 alter table doctors rename column password to qualifications;
 
 create table bookings(
-    -> id serial primary key,
-    -> booking_id bigint unsigned,
-    -> patient_id bigint unsigned,
-    -> foreign key(booking_id) references timeslots(id),
-    -> foreign key(patient_id) references users(id));
+    id serial primary key,
+    booking_id bigint unsigned,
+    patient_id bigint unsigned,
+    foreign key(booking_id) references timeslots(id),
+    foreign key(patient_id) references users(id));
 
 alter table bookings rename column booking_id to timeslot_id;
 
 create table tests(
-    -> test_id serial,
-    -> name varchar(30),
-    -> description varchar(100),
-    -> hospital bigint unsigned,
-    -> foreign key(hospital) references hospitals(id));
+     test_id serial,
+     name varchar(30),
+     description varchar(100),
+     hospital bigint unsigned,
+     foreign key(hospital) references hospitals(id));
 
 alter table tests add column image varchar(100);
 
@@ -104,3 +104,7 @@ alter table timeslots modify start_time varchar(20);
 alter table timeslots modify end_time varchar(20);
 
 alter table bookings add constraint unique(timeslot_id,patient_id);
+
+delete from hospitals;
+alter table hospitals add column coords point not null srid 4326;
+alter table hospitals add spatial index(coords);

@@ -2,10 +2,13 @@ const router = require("express").Router();
 const { register, login } = require("./controller");
 
 const multer = require("multer");
+const fs = require("fs");
 
 const imgConfig = multer.diskStorage({
   destination: (req, file, callback) => {
-    callback(null, "./app/auth/doctor/uploads");
+    const path = "./app/auth/doctor/uploads";
+    fs.mkdirSync(path, { recursive: true });
+    callback(null, path);
   },
   filename: (req, file, callback) => {
     callback(null, file.originalname);

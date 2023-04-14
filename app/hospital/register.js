@@ -9,27 +9,26 @@ const hospitalRegisterSchema = z.object({
   address: z.string(),
   root_mail: z.string().email(),
   root_pass: z.string(),
-  /*coords: z.object({
-    lat: z.number(),
-    lng: z.number(),
-  }),*/
+  lat: z.string(),
+  lng: z.string(),
 });
 
 hospitalRegisterRouter.post("/", async (req, res) => {
   try {
     const data = hospitalRegisterSchema.parse(req.body);
 
+    console.log(data);
+
     const file = req.file.filename;
     const image = `../uploads/${file}`;
     const hashedPassword = await bcrypt.hash(data.root_pass, 10);
 
-    //const sqlPoint = `ST_GeomFromText('POINT(${data.coords.lng} ${data.coords.lat})', 4326)`;
+    const sqlPoint = `ST_GeomFromText('POINT(${data.lng} ${data.lat})', 4326)`;
 
     const hospital = await pool.query(
       `INSERT INTO hospitals 
-      (name, address, root_mail, root_pass,image) 
-      VALUES (?, ?, ?, ? ,?);`,
-
+      (name, address, root_mail, root_pass, image, coords) 
+      VALUES (?, ?, ?, ? ,?, ${sqlPoint});`,
       [data.name, data.address, data.root_mail, hashedPassword, image]
     );
 

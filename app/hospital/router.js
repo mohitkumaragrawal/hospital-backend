@@ -16,9 +16,13 @@ const addTest = require("./tests/addTest");
 const deleteTest = require("./tests/deleteTest");
 const displayTest = require("./tests/displayTest");
 
+const fs = require("fs");
+
 const imgConfig = multer.diskStorage({
   destination: (req, file, callback) => {
-    callback(null, "./app/hospital/uploads");
+    const path = "./app/hospital/uploads";
+    fs.mkdirSync(path, { recursive: true });
+    callback(null, path);
   },
   filename: (req, file, callback) => {
     callback(null, file.originalname);
