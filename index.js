@@ -13,7 +13,7 @@ const userRouter = require("./app/user/router");
 const authMiddleWareUser = require("./app/authMiddleWareUser");
 
 // Test request
-app.get("/", (req, res) => {
+app.get("/api", (req, res) => {
   res.status(200).end();
 });
 
@@ -22,11 +22,11 @@ app.use(express.json());
 app.use(cors());
 
 // routes;
-app.use("/auth", require("./app/auth/router"));
-app.use("/hospital", require("./app/hospital/router"));
+app.use("/api/auth", require("./app/auth/router"));
+app.use("/api/hospital", require("./app/hospital/router"));
 
-app.use("/mainpage/hospital", authMiddleWareHospital, hospitalRouter);
-app.use("/mainpage/user", authMiddleWareUser, userRouter);
+app.use("/api/mainpage/hospital", authMiddleWareHospital, hospitalRouter);
+app.use("/api/mainpage/user", authMiddleWareUser, userRouter);
 
 const PORT = process.env.PORT || "5000";
 console.log(`Server started listening on ${PORT}`);
