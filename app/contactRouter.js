@@ -4,9 +4,14 @@ const queryMail = async (req, res) => {
   const { email, phone, query } = req.body;
   const mailOptions = {
     from: process.env.EMAIL_ID,
-    to: email,
-    subject: "Query Received",
-    html: `<p>Your query "${query}" has been received successfully. Our officials will contact you soon on your number ${phone}</p>`,
+    to: process.env.DEVELOPER_MAIL,
+    subject: "[CONTACT US]: ALLISONE",
+    html: `
+      <p>EMAIL: ${email}</p>
+      <p>PHONE: ${phone}</p>
+
+      <p>Query: ${query}</p>
+    `,
   };
   transporter.sendMail(mailOptions, (err, data) => {
     if (err) {
