@@ -43,6 +43,10 @@ Technologies used
 ![4](https://user-images.githubusercontent.com/114980313/232327397-9781aa09-7e89-4f88-ab15-ee8691809507.jpg)
 ![5](https://user-images.githubusercontent.com/114980313/232327427-1ec157cb-7cd6-4c0d-bc1f-c6897eb4c9ce.jpg)
 ![6](https://user-images.githubusercontent.com/114980313/232327435-8b410a70-0e98-4659-b5e3-169ce3e1573e.jpg)
+![image](https://user-images.githubusercontent.com/114980313/232327565-a7960692-b49e-456e-bffa-ca112ea22e56.png)
+![image](https://user-images.githubusercontent.com/114980313/232327603-1808ff0e-a535-47a5-871a-a8ab12f69d16.png)
+![image](https://user-images.githubusercontent.com/114980313/232327665-1cccc2f7-97e3-4564-af81-f7f89721e881.png)
+![image](https://user-images.githubusercontent.com/114980313/232327711-1d9c195c-532e-4ede-98a3-e71db5c66ada.png)
 
 
 
